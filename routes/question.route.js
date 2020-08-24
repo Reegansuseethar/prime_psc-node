@@ -1,32 +1,69 @@
 const express = require('express');
 const app = express();
-const questionRoutes = express.Router();
+const questionRoute = express.Router();
 
-// Require Question model in our routes module
 let Question = require('../models/question');
 
-// Defined store route
-questionRoutes.route('/add').post(function (req, res) {
-    let question = new Question(req.body);
-    question.save()
-        .then(question => {
-            res.status(200).json({ 'question': 'Question added successfully' });
-        })
-        .catch(err => {
-            res.status(400).send("OOPS...Something went wrong.!!!");
-        });
+// Add Question
+questionRoute.route('/add-question').post((req, res, next) => {
+    Question.create(req.body, (error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            res.status(200).json({ 'message': 'Question added successfully' });
+        }
+    })
 });
 
-// Defined get data(index or listing) route
-questionRoutes.route('/get').get(function (req, res) {
-    Question.find(function (err, questions) {
-        if (err) {
-            console.log(err);
+// Get all Question
+questionRoute.route('/getAll').get((req, res) => {
+    Question.find((error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            res.json(data)
         }
-        else {
-            res.json(questions);
-        }
-    });
-});
+    })
+})
 
-module.exports = questionRoutes;
+// // Get single student
+// questionRoute.route('/read-student/:id').get((req, res) => {
+//   Student.findById(req.params.id, (error, data) => {
+//     if (error) {
+//       return next(error)
+//     } else {
+//       res.json(data)
+//     }
+//   })
+// })
+
+
+// // Update student
+// questionRoute.route('/update-student/:id').put((req, res, next) => {
+//   Student.findByIdAndUpdate(req.params.id, {
+//     $set: req.body
+//   }, (error, data) => {
+//     if (error) {
+//       return next(error);
+//       console.log(error)
+//     } else {
+//       res.json(data)
+//       console.log('Student successfully updated!')
+//     }
+//   })
+// })
+
+// // Delete student
+// questionRoute.route('/delete-student/:id').delete((req, res, next) => {
+//   Student.findByIdAndRemove(req.params.id, (error, data) => {
+//     if (error) {
+//       return next(error);
+//     } else {
+//       res.status(200).json({
+//         msg: data
+//       })
+//     }
+//   })
+// })
+
+module.exports = questionRoute;

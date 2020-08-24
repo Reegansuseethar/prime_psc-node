@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define collection and schema for Question
+// Define collection and schema
 let Question = new Schema({
   questionId: {
     type: Number
@@ -13,7 +13,7 @@ let Question = new Schema({
     type: String
   },
   questionSubgroup: {
-    type: Number
+    type: String
   },
   option1: {
     type: String
@@ -28,7 +28,7 @@ let Question = new Schema({
     type: String
   }
 }, {
-  collection: 'question'
-});
+  collection: 'question_master'
+})
 
-module.exports = mongoose.model('Question', Question);
+module.exports = mongoose.model('Question', Question)

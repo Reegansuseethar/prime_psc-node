@@ -1,34 +1,56 @@
-const express = require('express'),
+let express = require('express'),
     path = require('path'),
-    bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
     cors = require('cors'),
-    mongoose = require('mongoose');
+    bodyParser = require('body-parser'),
+    dataBaseConfig = require('./database.config');
+
+// Connecting mongoDB
+mongoose.Promise = global.Promise;
+mongoose.connect(dataBaseConfig.url, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+}).then(() => {
+    console.log('Database connected sucessfully ')
+},
+    error => {
+        console.log('Could not connected to database : ' + error)
+    }
+)
+
+// Set up express js port
+const questionRoute = require('./routes/question.route')
+
 const app = express();
-
-let router = require('express').Router();
-const dbConfig = require('./database.config.js');
-
-const questionRoutes = require('./routes/question.route');
-
-const enableCORS = function (request, response, next) {
-    response.header('Access-Control-Allow-Origin', request.headers.origin);
-    response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    response.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Date, X-Date');
-    return next();
-};
-app.use(cors());
-app.use(enableCORS);
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-mongoose.connect(dbConfig.url, { useNewUrlParser: true }).then(
-    () => { console.log('Database is connected') },
-    err => { console.log('Can not connect to the database' + err) }
-);;
-app.use('/api', router)
-app.use('/api/question', questionRoutes);
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(cors());
 
+// RESTful API root
+app.use('/api', questionRoute)
+
+// PORT
 const port = process.env.PORT || 8000;
 
-const server = app.listen(function () {
-    console.log('Listening on port http://localhost:' + port);
+app.listen(port, () => {
+    console.log('Connected to port ' + port)
+})
+
+// Find 404 and hand over to error handler
+app.use((req, res, next) => {
+    next(createError(404));
+});
+
+// Index Route
+app.get('/', (req, res) => {
+    res.send('invaild endpoint');
+});
+
+// error handler
+app.use(function (err, req, res, next) {
+    console.error(err.message);
+    if (!err.statusCode) err.statusCode = 500;
+    res.status(err.statusCode).send(err.message);
 });

@@ -10,7 +10,7 @@ questionRoute.route('/add-question').post((req, res, next) => {
         if (error) {
             return next(error)
         } else {
-            res.status(200).json({ 'message': 'Question added successfully' });
+            res.status(200).json({ message: 'Question added successfully.!' });
         }
     })
 });
@@ -26,9 +26,9 @@ questionRoute.route('/getAll').get((req, res) => {
     })
 })
 
-// // Get single student
-// questionRoute.route('/read-student/:id').get((req, res) => {
-//   Student.findById(req.params.id, (error, data) => {
+// // Get single Question
+// questionRoute.route('/read-question/:id').get((req, res) => {
+//   Question.findById(req.params.id, (error, data) => {
 //     if (error) {
 //       return next(error)
 //     } else {
@@ -38,9 +38,9 @@ questionRoute.route('/getAll').get((req, res) => {
 // })
 
 
-// // Update student
-// questionRoute.route('/update-student/:id').put((req, res, next) => {
-//   Student.findByIdAndUpdate(req.params.id, {
+// // Update Question
+// questionRoute.route('/update-question/:id').put((req, res, next) => {
+//   Question.findByIdAndUpdate(req.params.id, {
 //     $set: req.body
 //   }, (error, data) => {
 //     if (error) {
@@ -48,22 +48,20 @@ questionRoute.route('/getAll').get((req, res) => {
 //       console.log(error)
 //     } else {
 //       res.json(data)
-//       console.log('Student successfully updated!')
+//       console.log('Question successfully updated!')
 //     }
 //   })
 // })
 
-// // Delete student
-// questionRoute.route('/delete-student/:id').delete((req, res, next) => {
-//   Student.findByIdAndRemove(req.params.id, (error, data) => {
-//     if (error) {
-//       return next(error);
-//     } else {
-//       res.status(200).json({
-//         msg: data
-//       })
-//     }
-//   })
-// })
+// Delete Question
+questionRoute.route('/delete-question/:id').delete((req, res, next) => {
+    Question.findByIdAndRemove(req.params.id, (error, data) => {
+        if (error) {
+            return next(error);
+        } else {
+            res.status(200).json({ message: "Question removed.!" })
+        }
+    })
+})
 
 module.exports = questionRoute;

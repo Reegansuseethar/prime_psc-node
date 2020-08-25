@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 
 // Define collection and schema
 let Question = new Schema({
-  questionId: {
-    type: Number
-  },
   questionName: {
     type: String
   },

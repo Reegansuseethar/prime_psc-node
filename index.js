@@ -20,6 +20,7 @@ mongoose.connect(dataBaseConfig.url, {
 
 // Set up express js port
 const questionRoute = require('./routes/question.route')
+const groupRoute = require('./routes/group.route')
 
 const app = express();
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ app.use(cors());
 
 // RESTful API root
 app.use('/api', questionRoute)
+app.use('/api',groupRoute)
 
 // PORT
 const port = process.env.PORT || 8000;

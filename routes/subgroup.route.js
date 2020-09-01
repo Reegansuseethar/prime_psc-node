@@ -18,32 +18,36 @@ subgroupRoute.route('/addSubgroup').post((req, res, next) => {
 });
 
 // Get all Subgroup
-
 subgroupRoute.route("/getAllSubgroup").get((req, res) => {
     Subgroup.find((error, data) => {
         if (error) {
             return next(error)
         } else {
-            var conArr = []
-            for (let i in data) {
-                Group.findById(data[i].questionGroupid, (error, gropus) => {
-                    if (error) {
-                        return next(error)
-                    } else {
-                        conArr.push({ questionGroup: gropus.questionGroup, questionSubgroup: data[i].questionSubgroup, _id: data[i]._id });
+            conArr = [];
+            Group.find().lean().exec((err, groups) => {
+                if (err) {
+                    return next(err)
+                } else {
+                    for (let i in data) {
+                        var obj = JSON.parse(JSON.stringify(data[i]))
+                        obj.groupName = '';
+                        for (let j in groups) {
+                            if (data[i].questionGroup == groups[j]._id) {
+                                obj.groupName += groups[j].questionGroup;
+                            }
+                        }
+                        conArr.push(obj);
                     }
-                })
-            }
+                    res.json(conArr);
+                }
+            })
         }
-        setTimeout(() => {
-            res.json(conArr);
-        }, 500);
     })
 });
 
 // Get single Subgroup
-subgroupRoute.route('/getSubGroupById/:id').get((req, res) => {
-    Subgroup.findById((error, data) => {
+subgroupRoute.route('/getSubgroupById/:id').get((req, res) => {
+    Subgroup.findById(req.params.id, (error, data) => {
         if (error) {
             return next(error)
         } else {

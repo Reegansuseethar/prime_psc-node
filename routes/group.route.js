@@ -69,7 +69,6 @@ groupRoute.route('/getGroupandSubgroup').get((req, res, next) => {
         if (error) {
             return next(error)
         } else {
-            // res.json(data);
             var newArr = [];
             Subgroup.find().lean().exec((error, subgroups) => {
                 if (error) {
@@ -77,7 +76,7 @@ groupRoute.route('/getGroupandSubgroup').get((req, res, next) => {
                 } else {
                     for (let i in groups) {
                         var obj = JSON.parse(JSON.stringify(groups[i]))
-                        obj.subgroups = []
+                        obj.subgroups = [];
                         for (let j in subgroups) {
                             if (groups[i]._id == subgroups[j].questionGroupid) {
                                 obj.subgroups.push(subgroups[j]);

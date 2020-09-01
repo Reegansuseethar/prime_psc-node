@@ -5,6 +5,7 @@ const questionRoute = express.Router();
 let Question = require('../models/question');
 let Group = require('../models/group');
 let Subgroup = require('../models/subgroup');
+const subgroup = require('../models/subgroup');
 
 // Add Question
 questionRoute.route('/addQuestion').post((req, res, next) => {
@@ -23,23 +24,48 @@ questionRoute.route('/getAll').get((req, res) => {
         if (error) {
             return next(error)
         } else {
-            console.log(data)
-
-            for (let i in data) {
-                Group.findById(data[i].questionGroup, (err, groups) => {
-                    if (err) {
-                        return next(err)
-                    } else {
-                        data.filter(data => {
-                            if (data[i].questionGroup == groups._id) {
-                                data[i].groupName = groups.questionGroup;
+            groupArr = [];
+            questionArr = [];
+            Group.find().lean().exec((err, groups) => {
+                if (err) {
+                    return next(err)
+                } else {
+                    for (let i in data) {
+                        var obj = JSON.parse(JSON.stringify(data[i]))
+                        obj.groupName = '';
+                        for (let j in groups) {
+                            if (data[i].questionGroup == groups[j]._id) {
+                                obj.groupName += groups[j].questionGroup;
                             }
-                        })
+                        }
+                        groupArr.push(obj);
                     }
 
-                })
-            }
-            // res.json(data)
+                }
+            })
+
+            Subgroup.find().lean().exec((error, subgroups) => {
+                if (error) {
+                    return next(error)
+                } else {
+                    for (let i in groupArr) {
+                        var obj = JSON.parse(JSON.stringify(groupArr[i]))
+                        obj.subgroupName = '';
+                        for (let k in subgroups) {
+                            if (groupArr[i].questionSubgroup == subgroups[k]._id) {
+                                obj.subgroupName += subgroups[k].questionSubgroup;
+                            }
+                        }
+                        questionArr.push(obj);
+                    }
+                    res.json(questionArr);
+
+                }
+            })
+
+            // setTimeout(() => {
+            //     res.json(questionArr);
+            // }, 1000);
         }
     })
 })

@@ -18,15 +18,6 @@ subgroupRoute.route('/addSubgroup').post((req, res, next) => {
 });
 
 // Get all Subgroup
-// subgroupRoute.route('/getAllSubgroup').get((req, res) => {
-//     Subgroup.find((error, data) => {
-//         if (error) {
-//             return next(error)
-//         } else {
-//             res.json(data)
-//         }
-//     })
-// })
 
 subgroupRoute.route("/getAllSubgroup").get((req, res) => {
     Subgroup.find((error, data) => {
@@ -35,11 +26,11 @@ subgroupRoute.route("/getAllSubgroup").get((req, res) => {
         } else {
             var conArr = []
             for (let i in data) {
-                Group.findById(data[i].questionGroupid, (error, datas) => {
+                Group.findById(data[i].questionGroupid, (error, gropus) => {
                     if (error) {
                         return next(error)
                     } else {
-                        conArr.push({ questionGroup: datas.questionGroup, questionSubgroup: data[i].questionSubgroup, _id: data[i]._id });
+                        conArr.push({ questionGroup: gropus.questionGroup, questionSubgroup: data[i].questionSubgroup, _id: data[i]._id });
                     }
                 })
             }
@@ -52,7 +43,7 @@ subgroupRoute.route("/getAllSubgroup").get((req, res) => {
 
 // Get single Subgroup
 subgroupRoute.route('/getSubGroupById/:id').get((req, res) => {
-    Subgroup.findById(req.params.id, (error, data) => {
+    Subgroup.findById((error, data) => {
         if (error) {
             return next(error)
         } else {
@@ -85,5 +76,21 @@ subgroupRoute.route('/deleteSubgroup/:id').delete((req, res, next) => {
     })
 })
 
+//get Subgroup by Group ID
+subgroupRoute.route('/getSubGroupByGroupId/:id').get((req, res) => {
+    Subgroup.find((error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            let groupdata = [];
+            data.filter(data => {
+                if (data.questionGroupid == req.params.id) {
+                    groupdata.push(data);
+                }
+            })
+            res.json(groupdata)
+        }
+    })
+})
 
 module.exports = subgroupRoute;

@@ -3,7 +3,8 @@ const app = express();
 const questionRoute = express.Router();
 
 let Question = require('../models/question');
-
+let Group = require('../models/group');
+let Subgroup = require('../models/subgroup');
 
 // Add Question
 questionRoute.route('/addQuestion').post((req, res, next) => {
@@ -22,7 +23,23 @@ questionRoute.route('/getAll').get((req, res) => {
         if (error) {
             return next(error)
         } else {
-            res.json(data)
+            console.log(data)
+
+            for (let i in data) {
+                Group.findById(data[i].questionGroup, (err, groups) => {
+                    if (err) {
+                        return next(err)
+                    } else {
+                        data.filter(data => {
+                            if (data[i].questionGroup == groups._id) {
+                                data[i].groupName = groups.questionGroup;
+                            }
+                        })
+                    }
+
+                })
+            }
+            // res.json(data)
         }
     })
 })

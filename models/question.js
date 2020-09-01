@@ -23,6 +23,15 @@ let Question = new Schema({
   },
   option4: {
     type: String
+  },
+  freeQuestion: {
+    type: Boolean
+  },
+  premiumQuestion: {
+    type: Boolean
+  },
+  answer: {
+    type: String
   }
 }, {
   collection: 'question_master'

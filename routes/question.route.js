@@ -40,7 +40,6 @@ questionRoute.route('/getAll').get((req, res) => {
                         }
                         groupArr.push(obj);
                     }
-
                 }
             })
 
@@ -58,14 +57,13 @@ questionRoute.route('/getAll').get((req, res) => {
                         }
                         questionArr.push(obj);
                     }
-                    res.json(questionArr);
-
+                    // res.json(questionArr);
                 }
             })
 
-            // setTimeout(() => {
-            //     res.json(questionArr);
-            // }, 1000);
+            setTimeout(() => {
+                res.json(questionArr);
+            }, 500);
         }
     })
 })

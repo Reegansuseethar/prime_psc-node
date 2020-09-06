@@ -25,7 +25,7 @@ questionRoute.route('/getAll').get((req, res) => {
             return next(error)
         } else {
             groupArr = [];
-            questionArr = [];
+            // questionArr = [];
             Group.find().lean().exec((err, groups) => {
                 if (err) {
                     return next(err)
@@ -47,6 +47,7 @@ questionRoute.route('/getAll').get((req, res) => {
                 if (error) {
                     return next(error)
                 } else {
+                    var questionArr = [];
                     for (let i in groupArr) {
                         var obj = JSON.parse(JSON.stringify(groupArr[i]))
                         obj.subgroupName = '';
@@ -57,13 +58,15 @@ questionRoute.route('/getAll').get((req, res) => {
                         }
                         questionArr.push(obj);
                     }
-                    // res.json(questionArr);
+                    if (questionArr.length) {
+                        res.json(questionArr);
+                    }
                 }
             })
 
-            setTimeout(() => {
-                res.json(questionArr);
-            }, 500);
+            // setTimeout(() => {
+            //     res.json(questionArr);
+            // }, 1000);
         }
     })
 })

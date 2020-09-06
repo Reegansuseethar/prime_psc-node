@@ -5,7 +5,6 @@ const questionRoute = express.Router();
 let Question = require('../models/question');
 let Group = require('../models/group');
 let Subgroup = require('../models/subgroup');
-const subgroup = require('../models/subgroup');
 
 // Add Question
 questionRoute.route('/addQuestion').post((req, res, next) => {
@@ -63,10 +62,6 @@ questionRoute.route('/getAll').get((req, res) => {
                     }
                 }
             })
-
-            // setTimeout(() => {
-            //     res.json(questionArr);
-            // }, 1000);
         }
     })
 })

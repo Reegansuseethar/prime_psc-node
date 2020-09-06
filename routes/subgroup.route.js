@@ -23,11 +23,11 @@ subgroupRoute.route("/getAllSubgroup").get((req, res) => {
         if (error) {
             return next(error)
         } else {
-            conArr = [];
             Group.find().lean().exec((err, groups) => {
                 if (err) {
                     return next(err)
                 } else {
+                    conArr = [];
                     for (let i in data) {
                         var obj = JSON.parse(JSON.stringify(data[i]))
                         obj.groupName = '';

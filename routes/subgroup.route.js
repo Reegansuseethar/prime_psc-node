@@ -23,18 +23,19 @@ subgroupRoute.route("/getAllSubgroup").get((req, res) => {
         if (error) {
             return next(error)
         } else {
+            conArr = [];
             Group.find().lean().exec((err, groups) => {
                 if (err) {
                     return next(err)
                 } else {
-                    conArr = [];
                     for (let i in data) {
                         var obj = JSON.parse(JSON.stringify(data[i]))
                         obj.groupName = '';
                         for (let j in groups) {
-                            if (data[i].questionGroup == groups[j]._id) {
+                            if (data[i].questionGroupid == groups[j]._id) {
                                 obj.groupName += groups[j].questionGroup;
                             }
+
                         }
                         conArr.push(obj);
                     }
@@ -92,7 +93,7 @@ subgroupRoute.route('/getSubGroupByGroupId/:id').get((req, res) => {
                     groupdata.push(data);
                 }
             })
-            res.json(groupdata)
+            res.json(groupdata);
         }
     })
 })

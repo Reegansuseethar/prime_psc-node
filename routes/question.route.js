@@ -101,4 +101,55 @@ questionRoute.route('/deleteQuestion/:id').delete((req, res, next) => {
     })
 })
 
+//Question by SubgroupID
+
+questionRoute.route('/getQuestionBygroupId/:id').get((req, res) => {
+    Question.find((error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            let results = data.filter(x => x.questionGroup == req.params.id);
+
+            groupArr = [];
+            Group.find().lean().exec((err, groups) => {
+                if (err) {
+                    return next(err)
+                } else {
+                    for (let i in results) {
+                        var obj = JSON.parse(JSON.stringify(results[i]))
+                        obj.groupName = '';
+                        for (let j in groups) {
+                            if (results[i].questionGroup == groups[j]._id) {
+                                obj.groupName += groups[j].questionGroup;
+                            }
+                        }
+                        groupArr.push(obj);
+                    }
+                }
+            })
+
+            Subgroup.find().lean().exec((error, subgroups) => {
+                if (error) {
+                    return next(error)
+                } else {
+                    var questionArr = [];
+                    for (let i in groupArr) {
+                        var obj = JSON.parse(JSON.stringify(groupArr[i]))
+                        obj.subgroupName = '';
+                        for (let k in subgroups) {
+                            if (groupArr[i].questionSubgroup == subgroups[k]._id) {
+                                obj.subgroupName += subgroups[k].questionSubgroup;
+                            }
+                        }
+                        questionArr.push(obj);
+                    }
+                    if (questionArr.length) {
+                        res.json(questionArr);
+                    }
+                }
+            })
+        }
+    })
+})
+
 module.exports = questionRoute;

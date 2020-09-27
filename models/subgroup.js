@@ -8,7 +8,17 @@ let Subgroup = new Schema({
     },
     questionSubgroup: {
         type: String
+    },
+    amount: {
+        type: String
+    },
+    videoUrl: {
+        type: String
+    },
+    pdfMaterial: {
+        type: String
     }
+
 }, {
     collection: 'subgroup_master'
 })

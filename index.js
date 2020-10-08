@@ -23,9 +23,10 @@ mongoose.connect(dataBaseConfig.url, {
 const questionRoute = require('./routes/question.route')
 const groupRoute = require('./routes/group.route')
 const subgroupRoute = require('./routes/subgroup.route')
+const userRoute = require('./routes/user.route')
 
 const app = express();
-app.use(bodyParser.json({limit:'50mb'}));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }))
 app.use(cors());
 
@@ -33,6 +34,7 @@ app.use(cors());
 app.use('/api', questionRoute);
 app.use('/api', groupRoute);
 app.use('/api', subgroupRoute);
+app.use('/api', userRoute);
 
 // PORT
 const port = process.env.PORT || 8000;

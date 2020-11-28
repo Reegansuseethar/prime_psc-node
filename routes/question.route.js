@@ -59,6 +59,8 @@ questionRoute.route('/getAll').get((req, res) => {
                     }
                     if (questionArr.length) {
                         res.json(questionArr);
+                    }else{
+                        res.json([]);
                     }
                 }
             })

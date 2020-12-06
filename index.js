@@ -24,6 +24,7 @@ const questionRoute = require('./routes/question.route')
 const groupRoute = require('./routes/group.route')
 const subgroupRoute = require('./routes/subgroup.route')
 const userRoute = require('./routes/user.route')
+const examRoute = require('./routes/examresult.route')
 
 const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -35,6 +36,7 @@ app.use('/api', questionRoute);
 app.use('/api', groupRoute);
 app.use('/api', subgroupRoute);
 app.use('/api', userRoute);
+app.use('/api', examRoute);
 
 // PORT
 const port = process.env.PORT || 8000;

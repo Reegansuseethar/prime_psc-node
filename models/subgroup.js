@@ -15,6 +15,9 @@ let Subgroup = new Schema({
     videoUrl: {
         type: String
     },
+    questionCount: {
+        type: Number
+    },
     pdfMaterial: {
         type: String
     }

@@ -59,7 +59,7 @@ questionRoute.route('/getAll').get((req, res) => {
                     }
                     if (questionArr.length) {
                         res.json(questionArr);
-                    }else{
+                    } else {
                         res.json([]);
                     }
                 }
@@ -194,9 +194,10 @@ questionRoute.route('/getFreeQuestions/:id').get((req, res) => {
                             }
                         }
                         questionArr.push(obj);
+                        var randomQues = questionArr.sort( () => Math.random()-0.5) 
                     }
                     if (questionArr.length) {
-                        res.json(questionArr);
+                        res.json(randomQues);
                     }
                 }
             })
